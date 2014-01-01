@@ -21,12 +21,12 @@ BINDIR=$(dirname "$0")
 BUILD_DIR=$1
 
 if [[ ! -f $1/nginx.conf.erb ]]; then
-    echo "Copying custom nginx.conf.erb" | message
+    echo "Copying default nginx.conf.erb" | message
     cp $BINDIR/../conf/nginx.conf.erb $1/nginx.conf.erb
 fi
 
 if [[ ! -f $1/mime.types ]]; then
-    echo "Copying custom mime.types" | message
+    echo "Copying default mime.types" | message
     cp $BINDIR/../conf/mime.types $1/mime.types
 fi
 
