@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-if [[ -f $1/.nginx ]]; then
-  echo "nginx"
+if [[ -f $1/Gruntfile.coffee ]]; then
+  echo "nginx-grunt"
   exit 0
 else
   exit 1

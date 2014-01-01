@@ -1,15 +1,43 @@
 #!/usr/bin/env bash
 set -e
 
+indent() {
+    sed -u 's/^/       /'
+}
+
+message() {
+    sed -u 's/^/-----> /'
+}
+
+echo "Installing dependencies with apt" | message
+
+add-apt-repository -y ppa:chris-lea/node.js
 apt-get update
-apt-get -y install nginx
+apt-get -y install nginx nodejs bundler
 
 BINDIR=$(dirname "$0")
+BUILD_DIR=$1
 
 if [[ ! -f $1/nginx.conf.erb ]]; then
-        cp $BINDIR/../conf/nginx.conf.erb $1/nginx.conf.erb
+    echo "Copying custom nginx.conf.erb" | message
+    cp $BINDIR/../conf/nginx.conf.erb $1/nginx.conf.erb
 fi
 
 if [[ ! -f $1/mime.types ]]; then
-	cp $BINDIR/../conf/mime.types $1/mime.types
+    echo "Copying custom mime.types" | message
+    cp $BINDIR/../conf/mime.types $1/mime.types
 fi
+
+cd $BUILD_DIR
+
+echo "Installing project dependencies" | message
+
+echo "Installing Ruby gems" | indent
+bundle install
+
+echo "Installing Node packages" | indent
+npm install
+npm install -g grunt-cli
+
+echo "Building application" | message
+grunt dist
