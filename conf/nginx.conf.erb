@@ -9,7 +9,10 @@ events {
 
 http {
 	include mime.types;
-	server {
+	types_hash_max_size 2048;
+	types_hash_bucket_size 64;
+	
+    	server {
 		listen <%= ENV['PORT'] %>;
 		server_name  _;
 		root /app/dist;
